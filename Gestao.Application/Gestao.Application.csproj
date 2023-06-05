@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Gestao.Domain\Gestao.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>
