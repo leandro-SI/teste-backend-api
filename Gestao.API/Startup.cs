@@ -1,4 +1,7 @@
+using AutoMapper;
+using Gestao.Application.Profiles;
 using Gestao.Data.Context;
+using Gestao.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +33,12 @@ namespace Gestao.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<GestaoContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("Default")));
+
+            IMapper mapper = GestaoProfile.RegisterMaps().CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
 
             services.AddControllers()
                 .AddJsonOptions(opt =>
