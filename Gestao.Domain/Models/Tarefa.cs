@@ -7,22 +7,29 @@ using System.Text;
 
 namespace Gestao.Domain.Models
 {
+    [Table("tarefas")]
     public class Tarefa
     {
         [Key]
         public long Id { get; set; }
+
+        [Column("nome")]
         public string Nome { get; set; }
 
+        [Column("data_inicio")]
         public DateTime DataInicio { get; set; }
 
+        [Column("data_fim")]
         public DateTime DataFim { get; set; }
 
+        [Column("duracao_estimada")]
         public DateTime DuracaoEstimada { get; set; }
 
+        [Column("situacao")]
         [Required]
         public TarefaEstadoEnum Situacao { get; set; }
 
-        [Required]
+        [Column("pessoa_id")]
         public long PessoaId { get; set; }
 
         [ForeignKey(nameof(PessoaId))]

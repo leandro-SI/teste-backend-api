@@ -71,6 +71,8 @@ namespace Gestao.API
                 c.IncludeXmlComments(xmlPath);
             });
 
+            services.AddCors();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -96,6 +98,10 @@ namespace Gestao.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(opt => opt.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {
