@@ -17,6 +17,5 @@ namespace Gestao.Application.Dtos
         public DateTime DuracaoEstimada { get; set; }
         public TarefaEstadoEnum Situacao { get; set; }
         public long PessoaId { get; set; }
-        public Pessoa Pessoa { get; set; }
     }
 }

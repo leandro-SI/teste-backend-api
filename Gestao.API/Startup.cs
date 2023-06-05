@@ -17,7 +17,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -44,11 +46,11 @@ namespace Gestao.API
             services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
             services.AddScoped<ITarefaService, TarefaService>();
 
-            services.AddControllers()
-                .AddJsonOptions(opt =>
-                {
-                    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
+            services.AddControllers();
+                //.AddJsonOptions(opt =>
+                //{
+                //    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                //});
 
             services.AddSwaggerGen(c =>
             {
@@ -64,6 +66,9 @@ namespace Gestao.API
                         Url = new Uri("https://github.com/leandro-SI"),
                     },
                 });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
         }

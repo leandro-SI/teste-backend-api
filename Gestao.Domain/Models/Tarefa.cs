@@ -38,7 +38,7 @@ namespace Gestao.Domain.Models
             }
             else
             {
-                throw new Exception($"Tarefa já concluída em: {DataFim?.ToString("dd/MM/yyyy hh:mm")}");
+                throw new Exception($"Tarefa já concluída em: {DataFim.ToString("dd/MM/yyyy hh:mm")}");
             }
         }
 
