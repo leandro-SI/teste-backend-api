@@ -1,6 +1,8 @@
 ﻿using Gestao.Application.Dtos;
 using Gestao.Application.Services.Interfaces;
+using Gestao.Data.Dtos.Request;
 using Gestao.Domain.Enums;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,18 +25,18 @@ namespace Gestao.API.Controllers
         /// <summary>
         /// Tipos de SItuações
         /// </summary>
-        /// <param name="tarefaDTO">Situação: AGENDADA = 1 - ANDAMENTO = 2 - FINALIZADA = 3</param>
+        /// <param name="request">Situação: AGENDADA = 1 - ANDAMENTO = 2 - FINALIZADA = 3</param>
         /// <returns></returns>
         /// 
         [HttpPost]
         [ActionName("criar_tarefa")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CriarTarefa([FromBody] TarefaDTO tarefaDTO)
+        public async Task<IActionResult> CriarTarefa([FromBody] TarefaRequest request)
         {
             try
             {
-                var response = await _tarefaService.Create(tarefaDTO);
+                var response = await _tarefaService.Create(request);
 
                 if (response == null) return NoContent();
 
@@ -104,7 +106,7 @@ namespace Gestao.API.Controllers
 
                 if (!response) return BadRequest("Erro ao tentar finalizar tarefa");
 
-                return Ok(response);
+                return Ok("Tarefa finalizada com sucesso.");
             }
             catch (Exception _error)
             {
@@ -114,16 +116,16 @@ namespace Gestao.API.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPost]
         [ActionName("anexar_arquivo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AnexarArquivo(IFormFile file, [FromBody] ArquivoDTO dto)
+        public async Task<IActionResult> AnexarArquivo(IFormFile file, long idTarefa)
         {
             try
             {
-                var response = await _tarefaService.AnexarArquivo(file, dto);
+                var response = await _tarefaService.AnexarArquivo(file, idTarefa);
 
                 if (response == null) return BadRequest("Erro ao tentar anexar arquivo");
 

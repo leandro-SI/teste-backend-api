@@ -1,6 +1,7 @@
 ﻿using Gestao.Application.Dtos;
 using Gestao.Application.Services.Interfaces;
 using Gestao.Data.Dtos;
+using Gestao.Data.Dtos.Request;
 using Gestao.Data.Repositories.Interfaces;
 using Gestao.Domain.Enums;
 using Microsoft.AspNetCore.Http;
@@ -21,12 +22,26 @@ namespace Gestao.Application.Services
             _tarefaRepositorio = tarefaRepositorio;
         }
 
-        public async Task<TarefaDTO> Create(TarefaDTO dto)
+        public async Task<TarefaDTO> Create(TarefaRequest request)
         {
             try
             {
-                if (await _tarefaRepositorio.GetByNomeAsync(dto.Nome) != null)
+                if (await _tarefaRepositorio.GetByNomeAsync(request.Nome) != null)
                     throw new Exception("Já existe uma tarefa com esse nome.");
+
+                if (request.DataInicio > request.DataFim)
+                    throw new Exception("Data de início maior que a data final.");
+
+                var dto = new TarefaDTO()
+                {
+                    Nome = request.Nome,
+                    DataInicio = request.DataInicio,
+                    DataFim = request.DataFim,
+                    Situacao = request.Situacao,
+                    PessoaId = request.PessoaId,
+                    DuracaoEstimada = request.DataFim != null && request.DataInicio != null ? (request.DataFim - request.DataInicio) : TimeSpan.Zero,
+
+                };
 
                 return await _tarefaRepositorio.CreateTarefa(dto);
                 
@@ -47,7 +62,13 @@ namespace Gestao.Application.Services
                     throw new Exception("Tarefa não encontrada.");
 
                 if (tarefa.Situacao == TarefaEstadoEnum.FINALIZADA)
-                    throw new Exception("Tarefa é possível alterar a situação de uma tarefa já Finalizada.");
+                    throw new Exception("Não é possível alterar a situação de uma tarefa já Finalizada.");
+
+                if (situacao == TarefaEstadoEnum.ANDAMENTO)
+                {
+                    tarefa.DataInicio = DateTime.Now;
+                    tarefa.DuracaoEstimada = tarefa.DataFim - tarefa.DataInicio;
+                }                    
 
                 tarefa.Situacao = situacao;
 
@@ -78,7 +99,7 @@ namespace Gestao.Application.Services
         {
             try
             {
-                var response = await _tarefaRepositorio.FinalizarTarefa(idTarefa) .ConfigureAwait(false);
+                var response = await _tarefaRepositorio.FinalizarTarefa(idTarefa).ConfigureAwait(false);
 
                 return response;
             }
@@ -88,7 +109,7 @@ namespace Gestao.Application.Services
             }
         }
 
-        public async Task<ArquivoDTO> AnexarArquivo(IFormFile file, ArquivoDTO arquivo)
+        public async Task<ArquivoDTO> AnexarArquivo(IFormFile file, long idTarefa)
         {
             try
             {
@@ -106,17 +127,18 @@ namespace Gestao.Application.Services
                     await file.CopyToAsync(stream);
                 }
 
-                var extensao = file.Name.Split('.');
+                var extensao = uniqueFileName.Split(".");
 
                 var newFile = new ArquivoDTO()
                 {
-                    Nome = arquivo.Nome != null ? arquivo.Nome : uniqueFileName,
+                    TarefaId = idTarefa,
+                    Nome = uniqueFileName,
                     Caminho = uploadsFolder,
                     Extensao = extensao[1]                  
 
                 };
 
-                var response = await _tarefaRepositorio.AnexarArquivo(arquivo);
+                var response = await _tarefaRepositorio.AnexarArquivo(newFile);
 
                 return response;
 

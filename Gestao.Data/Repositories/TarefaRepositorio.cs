@@ -56,11 +56,15 @@ namespace Gestao.Data.Repositories
 
             if (tarefa.DataInicio == null) throw new Exception("Tarefa ainda não foi iniciada.");
 
+            TimeSpan periodoResponse = tarefa.DataFim - tarefa.DataInicio;
+
             PeriodoDTO periodo = new PeriodoDTO
             {
                 Idtarefa = tarefa.Id,
                 NomeTarefa = tarefa.Nome,
-                Periodo = tarefa.DataFim - tarefa.DataInicio
+                Dias = periodoResponse.Days,
+                Horas = periodoResponse.Hours,
+                Minutos = periodoResponse.Minutes
             };
 
             return periodo;
@@ -73,6 +77,8 @@ namespace Gestao.Data.Repositories
             if (tarefa == null) return false;
 
             tarefa.Situacao = TarefaEstadoEnum.FINALIZADA;
+            _context.Update(tarefa);
+            await _context.SaveChangesAsync();
 
             return true;
         }

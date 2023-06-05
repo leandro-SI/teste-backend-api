@@ -8,6 +8,9 @@ namespace Gestao.Data.Dtos
     {
         public long Idtarefa { get; set; }
         public string NomeTarefa { get; set; }
-        public TimeSpan Periodo { get; set; }
+        public int Dias { get; set; }
+        public int Horas { get; set; }
+        public int Minutos { get; set; }
+
     }
 }

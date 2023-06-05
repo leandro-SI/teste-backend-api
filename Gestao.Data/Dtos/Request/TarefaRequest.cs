@@ -1,21 +1,21 @@
 ﻿using Gestao.Domain.Enums;
-using Gestao.Domain.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Gestao.Application.Dtos
+namespace Gestao.Data.Dtos.Request
 {
-    public class TarefaDTO
+    public class TarefaRequest
     {
-        public long Id { get; set; }
+        [Required]
         public string Nome { get; set; }
         public DateTime DataInicio { get; set; }
+        [Required]
         public DateTime DataFim { get; set; }
-        public TimeSpan DuracaoEstimada { get; set; }
+        [Required]
         public TarefaEstadoEnum Situacao { get; set; }
+        [Required]
         public long PessoaId { get; set; }
     }
 }
