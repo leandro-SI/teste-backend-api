@@ -10,7 +10,7 @@ namespace Gestao.Data.Dtos.Request
     {
         [Required]
         public string Nome { get; set; }
-        public DateTime DataInicio { get; set; }
+        public DateTime? DataInicio { get; set; }
         [Required]
         public DateTime DataFim { get; set; }
         [Required]

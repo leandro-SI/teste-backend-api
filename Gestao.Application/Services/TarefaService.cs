@@ -4,6 +4,7 @@ using Gestao.Data.Dtos;
 using Gestao.Data.Dtos.Request;
 using Gestao.Data.Repositories.Interfaces;
 using Gestao.Domain.Enums;
+using Gestao.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace Gestao.Application.Services
                 if (request.DataInicio > request.DataFim)
                     throw new Exception("Data de início maior que a data final.");
 
+                TimeSpan periodoResponse = TimeSpan.Zero;
+                if (request.DataInicio.HasValue) periodoResponse = request.DataFim - request.DataInicio.Value;
+
                 var dto = new TarefaDTO()
                 {
                     Nome = request.Nome,
@@ -39,7 +43,7 @@ namespace Gestao.Application.Services
                     DataFim = request.DataFim,
                     Situacao = request.Situacao,
                     PessoaId = request.PessoaId,
-                    DuracaoEstimada = request.DataFim != null && request.DataInicio != null ? (request.DataFim - request.DataInicio) : TimeSpan.Zero,
+                    DuracaoEstimada = periodoResponse,
 
                 };
 
@@ -63,6 +67,13 @@ namespace Gestao.Application.Services
 
                 if (tarefa.Situacao == TarefaEstadoEnum.FINALIZADA)
                     throw new Exception("Não é possível alterar a situação de uma tarefa já Finalizada.");
+
+                if (tarefa.Situacao == TarefaEstadoEnum.AGENDADA || tarefa.Situacao == TarefaEstadoEnum.ANDAMENTO)
+                {
+                    if (tarefa.DataInicio == null) tarefa.DataInicio = DateTime.Now;
+
+                    if (tarefa.DataInicio > tarefa.DataFim) throw new Exception("Data de início maior que a data final.");
+                }
 
                 TimeSpan periodoResponse = TimeSpan.Zero;
 
