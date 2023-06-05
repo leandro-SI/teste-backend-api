@@ -11,6 +11,7 @@ namespace Gestao.Domain.Models
     {
         [Key]
         public long Id { get; set; }
+        public string Nome { get; set; }
 
         public DateTime DataInicio { get; set; }
 
@@ -28,13 +29,7 @@ namespace Gestao.Domain.Models
         public Pessoa Pessoa { get; set; }
 
 
-        public Tarefa()
-        {
-            DataFim = null;
-
-        }
-
-        public void Concluir()
+        public void FinalizarTarefa()
         {
             if (DataFim == null && Situacao != TarefaEstadoEnum.FINALIZADA)
             {

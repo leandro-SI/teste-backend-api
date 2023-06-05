@@ -6,5 +6,7 @@ namespace Gestao.Application.Dtos
 {
     public class PessoaDTO
     {
+        public long Id { get; set; }
+        public string Nome { get; set; }
     }
 }

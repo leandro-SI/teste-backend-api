@@ -22,13 +22,13 @@ namespace Gestao.Data.Context
             modelBuilder.Entity<Pessoa>().HasData(new Pessoa
             {
                 Id = 1,
-                Nome = "Leandro Cesar de Almeida"
+                Nome = "João Silva"
             });
 
             modelBuilder.Entity<Pessoa>().HasData(new Pessoa
             {
                 Id = 2,
-                Nome = "Luciana dos Santos"
+                Nome = "Ana Silva"
             });
         }
     }
