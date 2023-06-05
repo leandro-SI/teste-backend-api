@@ -1,6 +1,7 @@
 using AutoMapper;
 using Gestao.Application.Profiles;
 using Gestao.Data.Context;
+using Gestao.Data.Repositories;
 using Gestao.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
