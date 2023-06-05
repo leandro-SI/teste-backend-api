@@ -8,6 +8,7 @@ using Gestao.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,7 +66,7 @@ namespace Gestao.Data.Repositories
             return periodo;
         }
 
-        public async Task<bool> Finalizartarefa(long idTarefa)
+        public async Task<bool> FinalizarTarefa(long idTarefa)
         {
             var tarefa = await _context.Tarefas.FirstOrDefaultAsync(t => t.Id == idTarefa);
 
@@ -86,6 +87,26 @@ namespace Gestao.Data.Repositories
             return _mapper.Map<ArquivoDTO>(arquivo);
         }
 
+        public async Task<TarefaDTO> GetByNomeAsync(string nome)
+        {
+            IQueryable<Tarefa> query = _context.Tarefas;
 
+            query = query.AsNoTracking()
+                        .OrderBy(t => t.Nome)
+                        .Where(t => t.Nome.Equals(nome));
+
+            return  _mapper.Map<TarefaDTO>(await query.FirstOrDefaultAsync());
+        }
+
+        public async Task<TarefaDTO> GetByIdAsync(long id)
+        {
+            IQueryable<Tarefa> query = _context.Tarefas;
+
+            query = query.AsNoTracking()
+                        .OrderBy(t => t.Id)
+                        .Where(t => t.Id == id);
+
+            return _mapper.Map<TarefaDTO>(await query.FirstOrDefaultAsync());
+        }
     }
 }

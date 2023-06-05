@@ -14,7 +14,9 @@ namespace Gestao.Data.Repositories.Interfaces
         Task<TarefaDTO> CreateTarefa(TarefaDTO dto);
         Task<TarefaDTO> AtualizarSituacao(long idTarefa, TarefaEstadoEnum situacao);
         Task<PeriodoDTO> RetornoPeriodoTempo(long idTarefa);
-        Task<bool> Finalizartarefa(long idTarefa);
+        Task<bool> FinalizarTarefa(long idTarefa);
         Task<ArquivoDTO> AnexarArquivo(ArquivoDTO arquivo);
+        Task<TarefaDTO> GetByNomeAsync(string nome);
+        Task<TarefaDTO> GetByIdAsync(long id);
     }
 }

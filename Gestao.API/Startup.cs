@@ -1,5 +1,7 @@
 using AutoMapper;
 using Gestao.Application.Profiles;
+using Gestao.Application.Services;
+using Gestao.Application.Services.Interfaces;
 using Gestao.Data.Context;
 using Gestao.Data.Repositories;
 using Gestao.Data.Repositories.Interfaces;
@@ -40,6 +42,7 @@ namespace Gestao.API
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
+            services.AddScoped<ITarefaService, TarefaService>();
 
             services.AddControllers()
                 .AddJsonOptions(opt =>
