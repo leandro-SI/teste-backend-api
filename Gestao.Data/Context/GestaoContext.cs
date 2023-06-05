@@ -9,6 +9,11 @@ namespace Gestao.Data.Context
 {
     public class GestaoContext : DbContext
     {
+        public GestaoContext()
+        {
+            
+        }
+
         public GestaoContext(DbContextOptions<GestaoContext> options) : base(options)
         {
         }
