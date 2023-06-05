@@ -17,13 +17,13 @@ namespace Gestao.Domain.Models
         public string Nome { get; set; }
 
         [Column("data_inicio")]
-        public DateTime DataInicio { get; set; }
+        public DateTime? DataInicio { get; set; }
 
         [Column("data_fim")]
         public DateTime DataFim { get; set; }
 
         [Column("duracao_estimada")]
-        public DateTime DuracaoEstimada { get; set; }
+        public TimeSpan DuracaoEstimada { get; set; }
 
         [Column("situacao")]
         [Required]

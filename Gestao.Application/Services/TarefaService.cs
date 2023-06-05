@@ -64,10 +64,14 @@ namespace Gestao.Application.Services
                 if (tarefa.Situacao == TarefaEstadoEnum.FINALIZADA)
                     throw new Exception("Não é possível alterar a situação de uma tarefa já Finalizada.");
 
+                TimeSpan periodoResponse = TimeSpan.Zero;
+
+                if (tarefa.DataInicio.HasValue) periodoResponse = tarefa.DataFim - tarefa.DataInicio.Value;
+
                 if (situacao == TarefaEstadoEnum.ANDAMENTO)
                 {
                     tarefa.DataInicio = DateTime.Now;
-                    tarefa.DuracaoEstimada = tarefa.DataFim - tarefa.DataInicio;
+                    tarefa.DuracaoEstimada = periodoResponse;
                 }                    
 
                 tarefa.Situacao = situacao;

@@ -56,7 +56,9 @@ namespace Gestao.Data.Repositories
 
             if (tarefa.DataInicio == null) throw new Exception("Tarefa ainda não foi iniciada.");
 
-            TimeSpan periodoResponse = tarefa.DataFim - tarefa.DataInicio;
+            TimeSpan periodoResponse = TimeSpan.Zero;
+
+            if (tarefa.DataInicio.HasValue) periodoResponse = tarefa.DataFim - tarefa.DataInicio.Value;
 
             PeriodoDTO periodo = new PeriodoDTO
             {

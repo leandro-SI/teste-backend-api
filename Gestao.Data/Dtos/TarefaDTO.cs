@@ -12,7 +12,7 @@ namespace Gestao.Application.Dtos
     {
         public long Id { get; set; }
         public string Nome { get; set; }
-        public DateTime DataInicio { get; set; }
+        public DateTime? DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public TimeSpan DuracaoEstimada { get; set; }
         public TarefaEstadoEnum Situacao { get; set; }
